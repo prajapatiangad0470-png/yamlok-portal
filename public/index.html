@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏛️ यमलोक - Cinematic Narak Chambers</title>
+    <title>🏛️ यमलोक - Yamraj Throne</title>
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit&family=Yatra+One&display=swap" rel="stylesheet">
     <style>
         :root {
+            --fire: #ff2200;
             --gold: #ffd700;
-            --fire-red: #ff3300;
-            --bg-dark: #050002;
+            --bg: #030001;
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg);
             color: #f0e6d2;
             font-family: 'Tiro Devanagari Sanskrit', serif;
             margin: 0;
@@ -22,7 +22,7 @@
             text-align: center;
         }
 
-        /* Particle Background Canvas */
+        /* Floating Skull Canvas Background */
         #particleCanvas {
             position: fixed;
             top: 0; left: 0;
@@ -30,93 +30,120 @@
             z-index: 1; pointer-events: none;
         }
 
-        .wrapper {
+        /* SCREEN 1: ANCIENT NARAK DWAR */
+        #gateScreen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 10;
+            background: radial-gradient(circle, #2a0000 0%, #030001 90%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: all 0.8s ease-in-out;
+        }
+
+        .ancient-gate {
+            width: 280px;
+            height: 340px;
+            border: 8px double var(--gold);
+            border-bottom: none;
+            border-radius: 140px 140px 0 0;
+            background: radial-gradient(circle, #4a0000 0%, #050000 100%);
+            box-shadow: 0 0 50px var(--fire), inset 0 0 30px #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .gate-skulls {
+            font-size: 2rem;
+            text-shadow: 0 0 20px var(--fire);
+            margin-bottom: 10px;
+        }
+
+        .gate-title {
+            font-family: 'Yatra One', cursive;
+            font-size: 2.2rem;
+            color: var(--gold);
+            text-shadow: 0 0 20px var(--fire);
+            margin: 0;
+        }
+
+        .enter-btn {
+            background: linear-gradient(180deg, #cc0000 0%, #550000 100%);
+            border: 2px solid var(--gold);
+            color: #fff;
+            padding: 16px 32px;
+            font-family: 'Yatra One', cursive;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 30px var(--fire);
+            animation: pulseBtn 1.5s infinite alternate;
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(0.95); box-shadow: 0 0 15px var(--fire); }
+            100% { transform: scale(1.05); box-shadow: 0 0 40px var(--fire), 0 0 60px var(--gold); }
+        }
+
+        /* SCREEN 2: MAIN THRONE ROOM WITH SKULLS AND BONES */
+        .main-container {
             position: relative;
             z-index: 2;
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 500px;
+            margin: 40px auto;
             padding: 20px 15px;
+            display: none;
+        }
+
+        .throne-stage {
+            position: relative;
+            padding: 40px 20px;
+            background: radial-gradient(circle, #330000 0%, #050001 85%);
+            border: 3px double var(--gold);
+            border-radius: 16px;
+            box-shadow: 0 0 50px rgba(255, 34, 0, 0.9);
+        }
+
+        .throne-icon {
+            font-size: 6rem;
+            text-shadow: 0 0 40px #ff0000;
+            margin: 20px 0;
+            animation: throneGlow 2s infinite alternate;
+        }
+
+        @keyframes throneGlow {
+            0% { transform: scale(0.98); filter: drop-shadow(0 0 15px #ff0000); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 35px #ff5500); }
+        }
+
+        .skull-bone-floor {
+            font-size: 1.6rem;
+            letter-spacing: 8px;
+            color: #ccc;
+            margin: 15px 0;
+            text-shadow: 0 0 12px var(--fire);
         }
 
         .title {
             font-family: 'Yatra One', cursive;
             font-size: 2.8rem;
             color: var(--gold);
-            text-shadow: 0 0 20px rgba(255, 51, 0, 0.8);
-            margin: 10px 0 5px 0;
-        }
-
-        .nav-btn {
-            background: #1a0000;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-family: 'Yatra One', cursive;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .nav-btn.active {
-            background: var(--fire-red);
-            color: #fff;
-            box-shadow: 0 0 20px var(--fire-red);
-        }
-
-        .panel {
-            display: none;
-            background: rgba(15, 2, 2, 0.9);
-            border: 2px solid var(--gold);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: left;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-        }
-
-        .panel.active { display: block; }
-
-        select, input, button {
-            width: 100%;
-            padding: 14px;
+            text-shadow: 0 0 25px var(--fire);
             margin: 10px 0;
-            background: #000;
-            border: 1px solid var(--gold);
-            color: #fff;
-            border-radius: 5px;
-            font-size: 1rem;
-            box-sizing: border-box;
         }
 
-        .exec-btn {
-            background: linear-gradient(180deg, #b30000 0%, #660000 100%);
-            font-family: 'Yatra One', cursive;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: 0 0 15px var(--fire-red);
-        }
-
-        /* Animated Room Display Screen */
-        .room-display {
-            margin-top: 20px;
-            border: 2px solid var(--gold);
-            border-radius: 8px;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 0 25px rgba(255, 51, 0, 0.6);
-            display: none;
-        }
-
-        .room-gif {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-bottom: 2px solid var(--gold);
-        }
-
-        .room-text {
-            padding: 15px;
-            background: rgba(20, 0, 0, 0.9);
+        .sub-text {
+            color: #ffaaaa;
+            font-size: 1.1rem;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -124,129 +151,64 @@
 
     <canvas id="particleCanvas"></canvas>
 
-    <div class="wrapper" id="mainWrapper">
-        <h1 class="title">🏛️ यमलोक - Cinematic Narak 🏛️</h1>
-        <p style="color:var(--gold);">"कर्मण्येवाधिकारस्ते मा फलेषु कदाचन"</p>
-
-        <div style="margin-bottom:20px;">
-            <button class="nav-btn active" onclick="switchTab('court')">⚖️ धर्मसभा</button>
-            <button class="nav-btn" onclick="switchTab('pass')">🪪 गरुड़-पत्र</button>
+    <!-- 1. ANCIENT NARAK DWAR SCREEN -->
+    <div id="gateScreen">
+        <div class="ancient-gate">
+            <div class="gate-skulls">💀 ☠️ 💀</div>
+            <h1 class="gate-title">प्राचीन<br>नरक द्वार</h1>
+            <div class="gate-skulls" style="margin-top:15px;">🔥 🦬 🔥</div>
         </div>
+        <button class="enter-btn" onclick="enterYamlok()">🔥 TAP TO ENTER YAMLOK 🔥</button>
+    </div>
 
-        <!-- TAB 1: NARAK ROOMS -->
-        <div id="court" class="panel active">
-            <h2 style="color:var(--gold); font-family:'Yatra One'; margin-top:0;">📜 चित्रगुप्त महा-बहीखाता</h2>
+    <!-- 2. MAIN THRONE & SKULLS/BONES ONLY -->
+    <div class="main-container" id="mainRoom">
+        <div class="throne-stage">
+            <div class="skull-bone-floor">💀 ☠️ 🦴 💀 ☠️ 🦴 💀</div>
+            <div class="skull-bone-floor">🦴 💀 ☠️ 🦴 ☠️ 💀 🦴</div>
             
-            <label style="color:var(--gold);">जीवात्मा का नाम:</label>
-            <input type="text" id="soulName" placeholder="अपना नाम लिखें...">
+            <div class="throne-icon">🦬</div>
+            <h1 class="title">यमराज महा-सिंहासन</h1>
+            <p class="sub-text">"धर्मराज यमराज का मुख्य सिंहासन कक्ष"</p>
 
-            <label style="color:var(--gold);">पापकर्म विधान (Narak Chamber):</label>
-            <select id="sinSelect">
-                <option value="kumbhipak">🔥 कुंभीपाक - उबलते तेल का कड़ाहा (Lava Cauldron)</option>
-                <option value="raurav">🐍 रौरव - विषधर सर्प कूप (Serpent Pit)</option>
-                <option value="tamisra">⚡ तामिस्र - गदा व लोह श्रृंखला (Dark Thunder Chains)</option>
-                <option value="asipatra">🗡️ असिपत्रवन - तलवार-पत्तेदार जंगल (Blade Forest)</option>
-            </select>
-
-            <button class="exec-btn" onclick="openNarakRoom()">🔥 यमदण्ड एवं नर्क कक्ष खोलें</button>
-
-            <!-- Dynamic Animated Room Output -->
-            <div id="roomDisplay" class="room-display">
-                <img id="roomGif" class="room-gif" src="" alt="Narak Room Animation">
-                <div class="room-text" id="roomDetails"></div>
-            </div>
-        </div>
-
-        <!-- TAB 2: GARUD PASS -->
-        <div id="pass" class="panel">
-            <h2 style="color:var(--gold); font-family:'Yatra One'; margin-top:0;">🎟️ यमलोक गरुड़-पत्र</h2>
-            <input type="text" id="passName" placeholder="नाम दर्ज करें...">
-            <button class="exec-btn" onclick="generatePass()">📜 पत्र इश्यू करें</button>
-            <div id="passOut"></div>
+            <div class="skull-bone-floor">🦴 💀 ☠️ 🦴 ☠️ 💀 🦴</div>
+            <div class="skull-bone-floor">💀 ☠️ 🦴 💀 ☠️ 🦴 💀</div>
         </div>
     </div>
 
-    <audio id="thunder" src="https://assets.mixkit.co/active_storage/sfx/2174/2174-preview.mp3"></audio>
-
     <script>
-        // High-Quality Animation GIF URLs for Narak Chambers
-        const narakRooms = {
-            kumbhipak: {
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZxbDVpOG1xNml2aGF0dWJ5NGlqM2dtMjkycmZsa3MxbTFzOGI3dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L2QgkRnnAW3M4/giphy.gif",
-                title: "🔥 कुंभीपाक नरक कक्ष (Boiling Cauldron Chamber)",
-                desc: "पापी आत्मा को उबलते तेल व पिघली धातुओं के विशाल कड़ाहे में गरुड़ पुराण विधान अनुसार युगों तक पकाया जा रहा है!"
-            },
-            raurav: {
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnFlMnI4ZHdrdzRreThqMjE2enJxcDF1ZHRldDdmOTdrMG9mZXlhbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26ufoRAIGWxyizACQ/giphy.gif",
-                title: "🐍 रौरव नरक कक्ष (Serpent Pit Chamber)",
-                desc: "विशाल विषधर 'रुरु' नाग एवं खौफनाक जीव निरंतर आत्मा को डंस रहे हैं!"
-            },
-            tamisra: {
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGJhN3NmZnprOXQzbDFpMW5yZXBpdG1jN2I3eWkybTBoMjQyaWszbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfIPjeiVyM/giphy.gif",
-                title: "⚡ तामिस्र नरक कक्ष (Thunder & Metal Chains)",
-                desc: "घोर अंधकार में यमदूतों द्वारा लोहे की जलती जंजीरों व अस्त्रों से प्रहार किया जा रहा है!"
-            },
-            asipatra: {
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3pnaHR4dnBsMXhsbHFycXR5a3IwaDNyZmZzMGppcWF6aGx1dWJqZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT1R3C1lHqllc6xKdq/giphy.gif",
-                title: "🗡️ असिपत्रवन नरक कक्ष (Razor Blade Forest)",
-                desc: "तीखे तलवारों जैसे पत्तों वाले जंगल में आत्मा को यमदूत कोड़ों से दौड़ा रहे हैं!"
-            }
-        };
-
-        function openNarakRoom() {
-            const name = document.getElementById('soulName').value || "अज्ञात आत्मा";
-            const sin = document.getElementById('sinSelect').value;
-            const room = narakRooms[sin];
-
-            // Sound & Shake Effect
-            const audio = document.getElementById('thunder');
-            audio.currentTime = 0; audio.play().catch(() => {});
-
-            document.getElementById('roomGif').src = room.gif;
-            document.getElementById('roomDetails').innerHTML = `
-                <h3 style="color:var(--gold); margin-top:0;">${room.title}</h3>
-                <p><b>जीवात्मा:</b> ${name}</p>
-                <p style="color:#ffaaaa;">${room.desc}</p>
-            `;
-            document.getElementById('roomDisplay').style.display = 'block';
+        function enterYamlok() {
+            const gate = document.getElementById('gateScreen');
+            gate.style.opacity = '0';
+            gate.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                gate.style.display = 'none';
+                document.getElementById('mainRoom').style.display = 'block';
+            }, 700);
         }
 
-        function generatePass() {
-            const name = document.getElementById('passName').value || "जीवात्मा";
-            document.getElementById('passOut').innerHTML = `
-                <div style="background:#1a0000; border:2px solid var(--gold); padding:15px; margin-top:15px; border-radius:8px;">
-                    <h3 style="color:var(--gold);">॥ यमलोक गरुड़-पत्र ॥</h3>
-                    <p><b>जीवात्मा:</b> ${name}</p>
-                    <p><b>SOUL CODE:</b> YM-${Math.floor(100000 + Math.random()*900000)}</p>
-                </div>
-            `;
-        }
-
-        function switchTab(t) {
-            document.querySelectorAll('.panel').forEach(e => e.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(e => e.classList.remove('active'));
-            document.getElementById(t).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        // Particles
+        // Floating Skulls & Bones Background Animation
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const pts = Array.from({length:60}, () => ({
+
+        const items = ['💀', '☠️', '🦴'];
+        const particles = Array.from({length:50}, () => ({
             x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-            r: Math.random()*2+1, sy: Math.random()*-1-0.5
+            sy: Math.random()*-1-0.3, size: Math.random()*18+10,
+            icon: items[Math.floor(Math.random()*items.length)]
         }));
-        function draw() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            pts.forEach(p => {
-                p.y += p.sy; if(p.y < 0) p.y = canvas.height;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctx.fillStyle = 'rgba(255, 51, 0, 0.7)'; ctx.fill();
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.y += p.sy; if(p.y < -20) p.y = canvas.height + 20;
+                ctx.font = `${p.size}px serif`;
+                ctx.fillText(p.icon, p.x, p.y);
             });
-            requestAnimationFrame(draw);
+            requestAnimationFrame(drawParticles);
         }
-        draw();
+        drawParticles();
     </script>
 </body>
 </html>
