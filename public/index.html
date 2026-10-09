@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamlok Portal - यमलोक दरबार</title>
+    <style>
+        :root {
+            --fire-red: #ff3300;
+            --dark-bg: #0a0505;
+            --gold: #ffcc00;
+            --panel-bg: #1a0f0f;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--fire-red);
+            font-size: 2.2rem;
+            text-shadow: 0 0 10px rgba(255, 51, 0, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            color: #aaa;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: #2a1515;
+            color: #fff;
+            border: 1px solid var(--fire-red);
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--fire-red);
+            box-shadow: 0 0 12px var(--fire-red);
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--panel-bg);
+            border: 2px solid #3d1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        input, select, button {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #555;
+            background: #111;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #cc0000, #ff5500);
+            border: none;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* Pass Card Styling */
+        .pass-card {
+            background: linear-gradient(135deg, #1f0000, #400000);
+            border: 3px solid var(--gold);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+            position: relative;
+        }
+
+        .pass-title {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 5px;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #ddd;
+            margin: 15px 0;
+        }
+
+        .choice-btn {
+            background: #2b2000;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            margin: 5px 0;
+            text-align: left;
+        }
+
+        .choice-btn:hover {
+            background: var(--gold);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔥 यमलोक पोर्टल 🔥</h1>
+    <p class="tagline">चित्रगुप्त का डिजिटल बही-खाता</p>
+
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="switchTab('calculator')">⚖️ पाप-पुण्य</button>
+        <button class="tab-btn" onclick="switchTab('rpg')">🎮 यमलोक गेम</button>
+        <button class="tab-btn" onclick="switchTab('pass')">🎟️ यमलोक पास</button>
+    </div>
+
+    <!-- TAB 1: CALCULATOR -->
+    <div id="calculator" class="tab-content active">
+        <h2>पाप-पुण्य बैलेंस शीट</h2>
+        <input type="text" id="userName" placeholder="अपना नाम दर्ज करें...">
+        
+        <label style="display:block; text-align:left; margin-left:5%;">अपनी आदतें चुनें:</label>
+        <select id="habit1">
+            <option value="10">रोज़ सुबह 6 बजे उठना (+10 पुण्य)</option>
+            <option value="-20">रात 3 बजे तक रील देखना (-20 पाप)</option>
+            <option value="-30">दोस्तों को झूठे बहाने बनाना (-30 पाप)</option>
+        </select>
+
+        <select id="habit2">
+            <option value="20">दूसरों की मदद करना (+20 पुण्य)</option>
+            <option value="-15">बिना नहाये घूमना (-15 पाप)</option>
+            <option value="-25">कमेंट्स में लड़ाई करना (-25 पाप)</option>
+        </select>
+
+        <button class="action-btn" onclick="calculateScore()">हिसाब लगाएं</button>
+
+        <div id="calcResult" style="margin-top:15px;"></div>
+    </div>
+
+    <!-- TAB 2: RPG GAME -->
+    <div id="rpg" class="tab-content">
+        <h2>यमलोक से एस्केप</h2>
+        <div id="story" class="story-text">आप गलती से यमलोक के मुख्य द्वार पर पहुँच गए हैं। सामने चित्रगुप्त खड़े हैं।</div>
+        <div id="choices">
+            <button class="choice-btn" onclick="makeChoice(1)">चित्रगुप्त को समोसा ऑफर करें</button>
+            <button class="choice-btn" onclick="makeChoice(2)">चुपचाप पीछे मुड़कर भागें</button>
+        </div>
+    </div>
+
+    <!-- TAB 3: PASS GENERATOR -->
+    <div id="pass" class="tab-content">
+        <h2>डिजिटल यमलोक पास</h2>
+        <input type="text" id="passName" placeholder="पास के लिए नाम लिखें...">
+        <button class="action-btn" onclick="generatePass()">पास बनाएं</button>
+
+        <div id="passDisplay"></div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function calculateScore() {
+            const name = document.getElementById('userName').value || "पापी प्राणी";
+            const h1 = parseInt(document.getElementById('habit1').value);
+            const h2 = parseInt(document.getElementById('habit2').value);
+            const total = h1 + h2;
+
+            let resultHtml = `<h3>प्रणाम ${name}!</h3>`;
+            resultHtml += `<p>आपका कुल कर्म स्कोर: <b>${total}</b></p>`;
+
+            if(total < 0) {
+                resultHtml += `<p style="color:red;"><b>सज़ा:</b> गर्म तेल की कड़ाही में इंस्टा रील्स देखने की सज़ा!</p>`;
+            } else {
+                resultHtml += `<p style="color:gold;"><b>पुरस्कार:</b> यमलोक के स्पेशल गेस्ट हाउस में एंट्री!</p>`;
+            }
+
+            document.getElementById('calcResult').innerHTML = resultHtml;
+        }
+
+        function makeChoice(choice) {
+            const story = document.getElementById('story');
+            const choices = document.getElementById('choices');
+
+            if(choice === 1) {
+                story.innerText = "चित्रगुप्त समोसा देखकर खुश हो गए! उन्होंने आपका नाम पाप-पंजी से हटा दिया। आप सकुशल धरती पर वापस पहुँच गए!";
+                choices.innerHTML = `<button class="action-btn" onclick="location.reload()">फिर से खेलें</button>`;
+            } else if(choice === 2) {
+                story.innerText = "यमराज के भैंसे ने आपको भागते हुए देख लिया! आपको चित्रगुप्त का सहायक क्लर्क बना दिया गया।";
+                choices.innerHTML = `<button class="action-btn" onclick="location.reload()">फिर से खेलें</button>`;
+            }
+        }
+
+        function generatePass() {
+            const name = document.getElementById('passName').value || "अज्ञात आत्मा";
+            const passId = "YM-" + Math.floor(100000 + Math.random() * 900000);
+            
+            const html = `
+                <div class="pass-card">
+                    <div class="pass-title">OFFICIAL YAMLOK ENTRY PASS</div>
+                    <p><b>नाम:</b> ${name}</p>
+                    <p><b>SOUL ID:</b> ${passId}</p>
+                    <p><b>एंट्री जोन:</b> स्पेशल नर्क / स्वर्ग वीआईपी</p>
+                    <p><b>स्टेटस:</b> Approved by Chitragupta</p>
+                </div>
+            `;
+            document.getElementById('passDisplay').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

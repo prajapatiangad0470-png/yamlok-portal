@@ -1,0 +1,8 @@
+{
+  "name": "yamlok-portal",
+  "version": "1.0.0",
+  "main": "public/index.html",
+  "scripts": {
+    "start": "serve public"
+  }
+}
