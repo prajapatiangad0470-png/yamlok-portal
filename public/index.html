@@ -3,311 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yamlok Portal 2.0 - Dynamic Edition</title>
+    <title>🏛️ यमलोक - Cinematic Narak Chambers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit&family=Yatra+One&display=swap" rel="stylesheet">
     <style>
         :root {
+            --gold: #ffd700;
             --fire-red: #ff3300;
-            --dark-bg: #0a0505;
-            --gold: #ffcc00;
-            --panel-bg: #1a0f0f;
+            --bg-dark: #050002;
         }
 
         body {
-            background-color: var(--dark-bg);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: #f0e6d2;
+            font-family: 'Tiro Devanagari Sanskrit', serif;
             margin: 0;
-            padding: 15px;
+            padding: 0;
+            overflow-x: hidden;
             text-align: center;
         }
 
-        h1 {
-            color: var(--fire-red);
-            font-size: 2.2rem;
-            text-shadow: 0 0 10px rgba(255, 51, 0, 0.8);
-            margin-bottom: 5px;
+        /* Particle Background Canvas */
+        #particleCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
         }
 
-        .tagline {
-            color: #aaa;
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .tab-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: #2a1515;
-            color: #fff;
-            border: 1px solid var(--fire-red);
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--fire-red);
-            box-shadow: 0 0 12px var(--fire-red);
-        }
-
-        .tab-content {
-            display: none;
-            background: var(--panel-bg);
-            border: 2px solid #3d1a1a;
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 500px;
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
             margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            padding: 20px 15px;
         }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        input, button {
-            width: 90%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #555;
-            background: #111;
-            color: #fff;
-            font-size: 1rem;
-        }
-
-        .action-btn {
-            background: linear-gradient(45deg, #cc0000, #ff5500);
-            border: none;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .question-box {
-            text-align: left;
-            background: #221111;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border-left: 4px solid var(--fire-red);
-        }
-
-        .pass-card {
-            background: linear-gradient(135deg, #1f0000, #400000);
-            border: 3px solid var(--gold);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 15px;
-            text-align: left;
-        }
-
-        .pass-title {
+        .title {
+            font-family: 'Yatra One', cursive;
+            font-size: 2.8rem;
             color: var(--gold);
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 5px;
+            text-shadow: 0 0 20px rgba(255, 51, 0, 0.8);
+            margin: 10px 0 5px 0;
         }
 
-        .choice-btn {
-            background: #2b2000;
+        .nav-btn {
+            background: #1a0000;
             border: 1px solid var(--gold);
             color: var(--gold);
-            margin: 8px 0;
-            text-align: left;
-            padding: 10px;
-            width: 100%;
+            padding: 12px 20px;
             border-radius: 6px;
+            font-family: 'Yatra One', cursive;
             cursor: pointer;
+            margin: 5px;
         }
 
-        .choice-btn:hover {
-            background: var(--gold);
-            color: #000;
+        .nav-btn.active {
+            background: var(--fire-red);
+            color: #fff;
+            box-shadow: 0 0 20px var(--fire-red);
+        }
+
+        .panel {
+            display: none;
+            background: rgba(15, 2, 2, 0.9);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+        }
+
+        .panel.active { display: block; }
+
+        select, input, button {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background: #000;
+            border: 1px solid var(--gold);
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .exec-btn {
+            background: linear-gradient(180deg, #b30000 0%, #660000 100%);
+            font-family: 'Yatra One', cursive;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--fire-red);
+        }
+
+        /* Animated Room Display Screen */
+        .room-display {
+            margin-top: 20px;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 0 25px rgba(255, 51, 0, 0.6);
+            display: none;
+        }
+
+        .room-gif {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .room-text {
+            padding: 15px;
+            background: rgba(20, 0, 0, 0.9);
         }
     </style>
 </head>
 <body>
 
-    <h1>🔥 यमलोक पोर्टल 2.0 🔥</h1>
-    <p class="tagline">चित्रगुप्त का एआई-पावर्ड लाइव बही-खाता</p>
+    <canvas id="particleCanvas"></canvas>
 
-    <div class="tab-container">
-        <button class="tab-btn active" onclick="switchTab('calculator')">⚖️ रैंडम पाप-पुण्य</button>
-        <button class="tab-btn" onclick="switchTab('rpg')">🎮 अनअपेक्षित RPG</button>
-        <button class="tab-btn" onclick="switchTab('pass')">🎟️ डायनामिक पास</button>
+    <div class="wrapper" id="mainWrapper">
+        <h1 class="title">🏛️ यमलोक - Cinematic Narak 🏛️</h1>
+        <p style="color:var(--gold);">"कर्मण्येवाधिकारस्ते मा फलेषु कदाचन"</p>
+
+        <div style="margin-bottom:20px;">
+            <button class="nav-btn active" onclick="switchTab('court')">⚖️ धर्मसभा</button>
+            <button class="nav-btn" onclick="switchTab('pass')">🪪 गरुड़-पत्र</button>
+        </div>
+
+        <!-- TAB 1: NARAK ROOMS -->
+        <div id="court" class="panel active">
+            <h2 style="color:var(--gold); font-family:'Yatra One'; margin-top:0;">📜 चित्रगुप्त महा-बहीखाता</h2>
+            
+            <label style="color:var(--gold);">जीवात्मा का नाम:</label>
+            <input type="text" id="soulName" placeholder="अपना नाम लिखें...">
+
+            <label style="color:var(--gold);">पापकर्म विधान (Narak Chamber):</label>
+            <select id="sinSelect">
+                <option value="kumbhipak">🔥 कुंभीपाक - उबलते तेल का कड़ाहा (Lava Cauldron)</option>
+                <option value="raurav">🐍 रौरव - विषधर सर्प कूप (Serpent Pit)</option>
+                <option value="tamisra">⚡ तामिस्र - गदा व लोह श्रृंखला (Dark Thunder Chains)</option>
+                <option value="asipatra">🗡️ असिपत्रवन - तलवार-पत्तेदार जंगल (Blade Forest)</option>
+            </select>
+
+            <button class="exec-btn" onclick="openNarakRoom()">🔥 यमदण्ड एवं नर्क कक्ष खोलें</button>
+
+            <!-- Dynamic Animated Room Output -->
+            <div id="roomDisplay" class="room-display">
+                <img id="roomGif" class="room-gif" src="" alt="Narak Room Animation">
+                <div class="room-text" id="roomDetails"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: GARUD PASS -->
+        <div id="pass" class="panel">
+            <h2 style="color:var(--gold); font-family:'Yatra One'; margin-top:0;">🎟️ यमलोक गरुड़-पत्र</h2>
+            <input type="text" id="passName" placeholder="नाम दर्ज करें...">
+            <button class="exec-btn" onclick="generatePass()">📜 पत्र इश्यू करें</button>
+            <div id="passOut"></div>
+        </div>
     </div>
 
-    <!-- TAB 1: RANDOM CALCULATOR -->
-    <div id="calculator" class="tab-content active">
-        <h2>आज की अतरंगी जाँच</h2>
-        <input type="text" id="userName" placeholder="अपना नाम लिखें...">
-        
-        <div id="randomQuestions"></div>
-
-        <button class="action-btn" onclick="generateRandomQuiz()">🎲 नए रैंडम सवाल लाएं</button>
-        <button class="action-btn" style="background:green;" onclick="calculateDynamicScore()">🔥 कर्मफल निकालें</button>
-
-        <div id="calcResult" style="margin-top:15px;"></div>
-    </div>
-
-    <!-- TAB 2: RPG GAME -->
-    <div id="rpg" class="tab-content">
-        <h2>यमलोक एस्केप simulator</h2>
-        <div id="story" style="font-size:1.1rem; margin:15px 0;">आप आँखें खोलते हैं और देखते हैं कि यमराज का भैंसा आपको घूर रहा है!</div>
-        <div id="choices"></div>
-    </div>
-
-    <!-- TAB 3: PASS GENERATOR -->
-    <div id="pass" class="tab-content">
-        <h2>VIP यमलोक पास</h2>
-        <input type="text" id="passName" placeholder="अपना नाम लिखें...">
-        <button class="action-btn" onclick="generateDynamicPass()">🎟️ पास जनरेट करें</button>
-
-        <div id="passDisplay"></div>
-    </div>
+    <audio id="thunder" src="https://assets.mixkit.co/active_storage/sfx/2174/2174-preview.mp3"></audio>
 
     <script>
-        const allQuestions = [
-            { q: "रात को 2 बजे तक रील देखना?", points: -25 },
-            { q: "दुकानदार से 1 रुपये की टॉफी छोड़ देना?", points: +10 },
-            { q: "मैसेज 'Seen' करके रिप्लाई न करना?", points: -30 },
-            { q: "स्ट्रीट डॉग को बिस्किट खिलाना?", points: +40 },
-            { q: "मम्मी के बुलाने पर बहरे बनने का नाटक करना?", points: -35 },
-            { q: "दोस्त की शादी में बिना लिफाफे के खाना खा लेना?", points: -15 },
-            { q: "ग्रुप में फेक न्यूज़ शेयर करना?", points: -50 },
-            { q: "बिना नहाए मंदिर चले जाना?", points: -10 }
-        ];
-
-        let currentQuiz = [];
-
-        function generateRandomQuiz() {
-            const container = document.getElementById('randomQuestions');
-            container.innerHTML = '';
-            // Shuffle and pick 3 random questions
-            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-            currentQuiz = shuffled.slice(0, 3);
-
-            currentQuiz.forEach((item, index) => {
-                container.innerHTML += `
-                    <div class="question-box">
-                        <label>
-                            <input type="checkbox" id="q_${index}" style="width:auto;"> ${item.q}
-                        </label>
-                    </div>
-                `;
-            });
-        }
-
-        function calculateDynamicScore() {
-            const name = document.getElementById('userName').value || "पापी प्राणी";
-            let score = 0;
-
-            currentQuiz.forEach((item, index) => {
-                if(document.getElementById(`q_${index}`).checked) {
-                    score += item.points;
-                }
-            });
-
-            // Random Luck Multiplier (-20 to +20)
-            const luck = Math.floor(Math.random() * 41) - 20;
-            const finalScore = score + luck;
-
-            const punishments = [
-                "उबलते हुए मोबिल ऑयल में रील्स बनाने की सज़ा!",
-                "बिना वाई-फाई वाले कमरे में 100 साल रहना!",
-                "चित्रगुप्त के बही-खाते में दिन-रात एंट्री करने की ड्यूटी!"
-            ];
-            const rewards = [
-                "यमलोक के स्विमिंग पूल का लाइफटाइम पास!",
-                "अप्सराओं के डांस शो में VIP फ्रंट सीट!"
-            ];
-
-            const randomOutput = finalScore < 0 
-                ? punishments[Math.floor(Math.random() * punishments.length)]
-                : rewards[Math.floor(Math.random() * rewards.length)];
-
-            document.getElementById('calcResult').innerHTML = `
-                <h3>${name} का कर्म रिपोर्ट</h3>
-                <p>स्कोर: <b>${finalScore}</b> (लक फैक्टर: ${luck})</p>
-                <p><b>फैसला:</b> ${randomOutput}</p>
-            `;
-        }
-
-        // RPG Engine with Random Multi-branching
-        function startRPG() {
-            const story = document.getElementById('story');
-            const choices = document.getElementById('choices');
-            
-            story.innerText = "आप यमलोक के गेट पर खड़े हैं। यमराज के भैंसे ने आपको देख लिया है!";
-            choices.innerHTML = `
-                <button class="choice-btn" onclick="rpgOutcome('bribe')">🥐 भैंसे को बिस्किट ऑफर करें</button>
-                <button class="choice-btn" onclick="rpgOutcome('dance')">💃 नागिन डांस शुरू कर दें</button>
-                <button class="choice-btn" onclick="rpgOutcome('run')">🏃 पीछे मुड़कर सरपट भागें</button>
-            `;
-        }
-
-        function rpgOutcome(action) {
-            const story = document.getElementById('story');
-            const choices = document.getElementById('choices');
-            const roll = Math.random();
-
-            if(action === 'bribe') {
-                if(roll > 0.5) {
-                    story.innerText = "भैंसा खुश हो गया! उसने आपको अपनी पीठ पर बैठाकर वापस धरती पर छोड़ दिया। WIN!";
-                } else {
-                    story.innerText = "भैंसा डाइटिंग पर था! उसने गुस्सा होकर आपको नर्क की कड़ाही में फेंक दिया। GAME OVER!";
-                }
-            } else if(action === 'dance') {
-                story.innerText = "चित्रगुप्त आपका डांस देखकर इम्प्रेस हो गए! उन्होंने आपको यमलोक का सांस्कृतिक मंत्री बना दिया!";
-            } else {
-                story.innerText = "आप भागते-भागते चित्रगुप्त के चाय के कप से टकरा गए। सज़ा में आपको 1000 साल झाड़ू लगानी पड़ेगी!";
+        // High-Quality Animation GIF URLs for Narak Chambers
+        const narakRooms = {
+            kumbhipak: {
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZxbDVpOG1xNml2aGF0dWJ5NGlqM2dtMjkycmZsa3MxbTFzOGI3dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L2QgkRnnAW3M4/giphy.gif",
+                title: "🔥 कुंभीपाक नरक कक्ष (Boiling Cauldron Chamber)",
+                desc: "पापी आत्मा को उबलते तेल व पिघली धातुओं के विशाल कड़ाहे में गरुड़ पुराण विधान अनुसार युगों तक पकाया जा रहा है!"
+            },
+            raurav: {
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnFlMnI4ZHdrdzRreThqMjE2enJxcDF1ZHRldDdmOTdrMG9mZXlhbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26ufoRAIGWxyizACQ/giphy.gif",
+                title: "🐍 रौरव नरक कक्ष (Serpent Pit Chamber)",
+                desc: "विशाल विषधर 'रुरु' नाग एवं खौफनाक जीव निरंतर आत्मा को डंस रहे हैं!"
+            },
+            tamisra: {
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGJhN3NmZnprOXQzbDFpMW5yZXBpdG1jN2I3eWkybTBoMjQyaWszbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfIPjeiVyM/giphy.gif",
+                title: "⚡ तामिस्र नरक कक्ष (Thunder & Metal Chains)",
+                desc: "घोर अंधकार में यमदूतों द्वारा लोहे की जलती जंजीरों व अस्त्रों से प्रहार किया जा रहा है!"
+            },
+            asipatra: {
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3pnaHR4dnBsMXhsbHFycXR5a3IwaDNyZmZzMGppcWF6aGx1dWJqZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT1R3C1lHqllc6xKdq/giphy.gif",
+                title: "🗡️ असिपत्रवन नरक कक्ष (Razor Blade Forest)",
+                desc: "तीखे तलवारों जैसे पत्तों वाले जंगल में आत्मा को यमदूत कोड़ों से दौड़ा रहे हैं!"
             }
+        };
 
-            choices.innerHTML = `<button class="action-btn" onclick="startRPG()">🔄 फिर से नया गेम खेलें</button>`;
+        function openNarakRoom() {
+            const name = document.getElementById('soulName').value || "अज्ञात आत्मा";
+            const sin = document.getElementById('sinSelect').value;
+            const room = narakRooms[sin];
+
+            // Sound & Shake Effect
+            const audio = document.getElementById('thunder');
+            audio.currentTime = 0; audio.play().catch(() => {});
+
+            document.getElementById('roomGif').src = room.gif;
+            document.getElementById('roomDetails').innerHTML = `
+                <h3 style="color:var(--gold); margin-top:0;">${room.title}</h3>
+                <p><b>जीवात्मा:</b> ${name}</p>
+                <p style="color:#ffaaaa;">${room.desc}</p>
+            `;
+            document.getElementById('roomDisplay').style.display = 'block';
         }
 
-        function generateDynamicPass() {
-            const name = document.getElementById('passName').value || "अज्ञात आत्मा";
-            const passId = "YM-" + Math.floor(100000 + Math.random() * 900000);
-            
-            const titles = ["Pro Pap-Aatma", "Chitragupta's Favourite", "Narak VIP Guest", "Moksh Candidate"];
-            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-
-            const html = `
-                <div class="pass-card">
-                    <div class="pass-title">OFFICIAL YAMLOK ENTRY PASS</div>
-                    <p><b>नाम:</b> ${name}</p>
-                    <p><b>SOUL ID:</b> ${passId}</p>
-                    <p><b>उपाधि:</b> ${randomTitle}</p>
-                    <p><b>सिक्योरिटी कोड:</b> 💀-00${Math.floor(Math.random()*99)}</p>
+        function generatePass() {
+            const name = document.getElementById('passName').value || "जीवात्मा";
+            document.getElementById('passOut').innerHTML = `
+                <div style="background:#1a0000; border:2px solid var(--gold); padding:15px; margin-top:15px; border-radius:8px;">
+                    <h3 style="color:var(--gold);">॥ यमलोक गरुड़-पत्र ॥</h3>
+                    <p><b>जीवात्मा:</b> ${name}</p>
+                    <p><b>SOUL CODE:</b> YM-${Math.floor(100000 + Math.random()*900000)}</p>
                 </div>
             `;
-            document.getElementById('passDisplay').innerHTML = html;
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+        function switchTab(t) {
+            document.querySelectorAll('.panel').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(e => e.classList.remove('active'));
+            document.getElementById(t).classList.add('active');
             event.target.classList.add('active');
         }
 
-        // Init
-        generateRandomQuiz();
-        startRPG();
+        // Particles
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const pts = Array.from({length:60}, () => ({
+            x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+            r: Math.random()*2+1, sy: Math.random()*-1-0.5
+        }));
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            pts.forEach(p => {
+                p.y += p.sy; if(p.y < 0) p.y = canvas.height;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.fillStyle = 'rgba(255, 51, 0, 0.7)'; ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
     </script>
 </body>
 </html>
-
